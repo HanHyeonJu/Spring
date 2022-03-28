@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="layouts :: 헤드"></head>
+  <body>
+    <nav th:replace="layouts :: 네브바"></nav>
+    <div class="container mt-3">
+      <form action="/projects/save" method="post" th:object="${project}">
+        <div class="row my-2">
+          <input class="form-control" th:field="*{name}" type="text" placeholder="프로젝트 이름" />
+        </div>
+        <div class="row my-2">
+          <select class="form-select" th:field="*{stage}">
+            <option th:value="시작전">시작전</option>
+            <option th:value="진행중">진행중</option>
+            <option th:value="완료">완료</option>
+          </select>
+        </div>
+        <div class="row my-2">
+          <textarea class="form-control" th:field="*{description}" placeholder="프로젝트 설명"></textarea>
+        </div>
+        <div class="row my-2">
+          <p>직원선택</p>
+          <!-- 프로젝트 클래스에서 추가한 employees가 이 곳에서 mapping됨, 클래스에서 선언한 이름과 같아야 함-->
+          <!-- 여기에서 선택된 value는 emploees 필드명으로 submit됨 -->
+          <!-- multiple속성을 설정해두면 여러 개 선택가능 -->
+          <select class="form-select" th:field="*{employees}" multiple>
+            <!-- 직원 전체를 옵션으로 출력 -->
+            <!-- 보여지는 option은 name이지만 submit되는 값은 id -->
+            <option th:each="employee : ${empList}" th:value="${employee.employeeId}" th:text="${employee.firstName}"></option>
+          </select>
+        </div>
+        <button class="btn btn-primary" type="submit">새 프로젝트</button>
+      </form>
+    </div>
+    <footer th:replace="layouts :: 푸터"></footer>
+  </body>
+</html>
