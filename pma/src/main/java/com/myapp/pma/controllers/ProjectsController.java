@@ -10,25 +10,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 //import org.springframework.web.bind.annotation.RequestParam;
 
-import com.myapp.pma.dao.EmployeeRepository;
-import com.myapp.pma.dao.ProjectRepository;
 import com.myapp.pma.entities.Employee;
 import com.myapp.pma.entities.Project;
+import com.myapp.pma.services.EmployeeService;
+import com.myapp.pma.services.ProjectService;
 
 @Controller
 @RequestMapping("/projects")
 public class ProjectsController {
 	
-	// 스프링에서 repository 객체를 처음에 자동생성해서 가지고 있다가 Autowired를 어노테이션하면 관련 객체를 필요할 때 자동으로 연결시켜줌
-	@Autowired 
-	private ProjectRepository projectRepository; // 인터페이스 객체 선언
 	
 	@Autowired 
-	private EmployeeRepository employeeRepository;
+	private ProjectService projectService; // 인터페이스 객체 선언
+	
+	@Autowired 
+	private EmployeeService employeeService;
 	
 	@GetMapping
 	public String displayEmpList(Model model) {
-		List<Project> projectList = projectRepository.findAll();
+		List<Project> projectList = projectService.findAll();
 		model.addAttribute(projectList);
 		return "projects/projectList";
 	}
@@ -37,14 +37,14 @@ public class ProjectsController {
 	public String displayProjectForm(Model model) {
 		Project p = new Project();
 		model.addAttribute("project", p);
-		List<Employee> empList = employeeRepository.findAll();
+		List<Employee> empList = employeeService.findAll();
 		model.addAttribute("empList", empList);
 		return "projects/new-project";
 	}
 	
 	@PostMapping("/save")
 	public String createProject(Project project) { // @RequestParam("employees") List<Long> ids employees는 리스트이기 때문에 List로 id를 받음
-		projectRepository.save(project); // DB에 project객체를 테이블에 저장(post로 save에 갔을 때)
+		projectService.save(project); // DB에 project객체를 테이블에 저장(post로 save에 갔을 때)
 		return "redirect:/projects/new"; // (/save)post - redirect - (/new)get 패턴(PRG - 중복방지, 공유목적) 
 	}
 	// 이미 employee, project클래스에서 각각 클래스 DB의 리스트들을 조인한 상태로 새로운 테이블을 생성하였기 때문에 save를 하게 되면 별다른 설정을 하지 않아도 새로 생성한 테이블에 생성해 놓은 컬럼의 값들이 DB에 저장된다
