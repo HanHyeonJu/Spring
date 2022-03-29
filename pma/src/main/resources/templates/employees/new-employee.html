@@ -4,7 +4,7 @@
   <body>
     <nav th:replace="layouts :: 네브바"></nav>
     <div class="container">
-      <form action="/employees/save" method="post" th:object="${employee}">
+      <form th:action="@{/employees/save}" method="post" th:object="${employee}">
         <div class="row my-2">
           <input class="form-control" th:field="*{lastName}" type="text" placeholder="성" />
         </div>
