@@ -4,25 +4,32 @@
   <body>
     <nav th:replace="layouts :: 네브바"></nav>
 
-    <div class="container mt-3">
-      <a class="btn btn-success" href="/employees/new" role="button"> 새 직원</a>
-    </div>
-    <div class="container mt-3">
+    <div class="container">
       <h1>직원 현황</h1>
+      <a class="btn btn-outline-success my-3" th:href="@{/employees/new}">직원 추가</a>
       <table class="table table-hover">
         <thead class="table-dark">
           <tr>
             <th>성</th>
             <th>이름</th>
             <th>이메일</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <!-- 타임리프의 반복문 -->
-          <tr th:each="employee : ${employeeList}">
+          <tr th:each="employee : ${empList}">
             <td th:text="${employee.lastName}"></td>
             <td th:text="${employee.firstName}"></td>
             <td th:text="${employee.email}"></td>
+            <td>
+              <!-- 타임리프 (id=1) => ?id=1 -->
+              <a th:href="@{/employees/update(id=${emp.employeeId})}" class="btn btn-outline-info btn-sm">수정</a>
+              <a th:href="@{/employees/delete(id=${emp.employeeId})}" class="btn btn-outline-danger btn-sm"
+              onclick="if((!confirm('정말로 삭제할까요?'))) return false">삭제</a>
+            </td>
+          </tr>              
+            </td>
           </tr>
         </tbody>
       </table>

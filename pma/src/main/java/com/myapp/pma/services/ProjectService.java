@@ -22,4 +22,23 @@ public class ProjectService {
 	public void save(Project project) {
 		projectRepository.save(project);
 	}
+	
+	public void update(Project project) {
+		// DB에서 업데이트 할 프로젝트를 넣어줌
+		Project pro = projectRepository.findByProjectId(project.getProjectId());
+		// 필요한 내용만 업데이트
+		pro.setName(project.getName());
+		pro.setStage(project.getStage());
+		pro.setDescription(project.getDescription());
+		// 수정한 객체 emp를 저장
+		projectRepository.save(pro);
+	}
+
+	public Project findByProjectId(long id) {
+		return projectRepository.findByProjectId(id);
+	}
+
+	public void deleteProjectById(long id) {
+		projectRepository.deleteById(id);
+	}	
 }

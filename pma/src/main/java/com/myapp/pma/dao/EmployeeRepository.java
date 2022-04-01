@@ -23,4 +23,5 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> { // 
 			+ "ORDER BY count DESC" ) // left 조인 하면 프로젝트에 참여하지 않은 직원들도 출력
 	public List<EmployeeProject> employeeProjects();  // employeeProjects = 메소드 이름 
 
+	Employee findByEmployeeId(Long id);
 }

@@ -12,6 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 //import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -21,8 +25,15 @@ public class Employee {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // DB에서 자동생성
 	private Long employeeId;
 	
+	@NotBlank(message = "이름을 입력해주세요")
+	@Size(min=1, max=20, message="이름은 1자에서 20자까지 가능합니다")
 	private String firstName;
+	
+	@NotBlank(message = "성을 입력해주세요")
+	@Size(min=1, max=3, message="성은 1자에서 3자까지 가능합니다")
 	private String lastName;
+	
+	@NotBlank(message = "이메일을 입력해주세요")
 	private String email;
 	
 	// DB가 아니 JPA에서 관계설정
@@ -34,6 +45,7 @@ public class Employee {
 				inverseJoinColumns = @JoinColumn(name="project_id")) // n:n 관계에서는 새로운 테이블을 만들고 해당 클래스의 테이블에 id, 다른 테이블의 id를 입력
 	
 	//private Project project;
+	@JsonIgnore // restful할 때 -- ?
 	private List<Project> projects;
 	
 	public Employee() {

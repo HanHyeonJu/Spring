@@ -27,4 +27,22 @@ public class EmployeeService {
 		return employeeRepository.employeeProjects();
 	}
 
+	public Employee findByEmployeeId(long id) {		
+		return employeeRepository.findByEmployeeId(id);
+	}
+	
+	public void update(Employee employee) {
+		// DB에서 업데이트 할 직원 객체를 넣어줌
+		Employee emp = employeeRepository.findByEmployeeId(employee.getEmployeeId());
+		// 필요한 내용만 업데이트
+		emp.setFirstName(employee.getFirstName());
+		emp.setLastName(employee.getLastName());
+		emp.setEmail(employee.getEmail());
+		// 수정한 객체 emp를 저장
+		employeeRepository.save(emp);
+	}
+
+	public void deleteEmployeeById(long id) {
+		employeeRepository.deleteById(id);
+	}
 }
