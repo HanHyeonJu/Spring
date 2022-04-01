@@ -59,7 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")); //로그아웃 추가
 			 
 		//시큐리티에서는 기본적으로 csrf 방지가 적용중
-		http.csrf().disable();												
+		//http.csrf().disable();												
 		}
 	}
 

@@ -5,21 +5,21 @@
     <nav th:replace="layouts :: 네브바"></nav>
 
     <div class="container">
-      <!-- 타임리프의 th:action 주소는 csrf 토큰 내장 -->
+      <!-- 타임리프의 th:action 주소는 csrf 토큰이 내장되어 있으므로 데이터를 요청할 때 crsf를 disable해주지 않아도 에러가 나지 않는다 -->
       <form th:action="@{/employees/save}" method="post" th:object="${employee}">
-        <input type="hidden" th:field="*{employeeId}"/>
+        <input type="hidden" th:field="*{employeeId}" />
         <div class="row my-2">
           <input class="form-control" th:field="*{lastName}" type="text" placeholder="성" />
           <!-- 넘어온 데이터 fields에서 lastName관련 오류가 있을 경우 -->
-          <span style="color:red;" th:if="${#fields.hasErrors('lastName')}" th:errors="${employee.lastName}"></span>
+          <span style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="${employee.lastName}"></span>
         </div>
         <div class="row my-2">
           <input class="form-control" th:field="*{firstName}" type="text" placeholder="이름" />
-          <span style="color:red;" th:if="${#fields.hasErrors('firstName')}" th:errors="${employee.firstName}"></span>
+          <span style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="${employee.firstName}"></span>
         </div>
         <div class="row my-2">
           <input type="email" class="form-control" th:field="*{email}" placeholder="이메일" />
-          <span style="color:red;" th:if="${#fields.hasErrors('email')}" th:errors="${employee.email}"></span>
+          <span style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="${employee.email}"></span>
         </div>
         <button class="btn btn-primary" type="submit">저 장</button>
       </form>
