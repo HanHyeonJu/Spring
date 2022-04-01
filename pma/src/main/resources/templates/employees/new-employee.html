@@ -5,7 +5,8 @@
     <nav th:replace="layouts :: 네브바"></nav>
 
     <div class="container">
-      <!-- 타임리프의 th:action 주소는 csrf 토큰이 내장되어 있으므로 데이터를 요청할 때 crsf를 disable해주지 않아도 에러가 나지 않는다 -->
+      <!-- 타임리프의 th:action 주소는 csrf 토큰이 내장되어 있으므로 데이터를 요청하고 crsf체크를 할 때 같은 브라우저라고 알려줄 수 있음
+           그래서 crsf를 disable해주지 않아도 에러가 나지 않는다 -->
       <form th:action="@{/employees/save}" method="post" th:object="${employee}">
         <input type="hidden" th:field="*{employeeId}" />
         <div class="row my-2">
