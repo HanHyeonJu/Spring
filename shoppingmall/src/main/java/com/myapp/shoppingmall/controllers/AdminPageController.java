@@ -44,7 +44,7 @@ public class AdminPageController {
 		// 유효성 검사 에러가 있으면 다시 돌아감
 		if(bindingResult.hasErrors()) return "admin/pages/add";
 		// 검사 통과시
-		attr.addFlashAttribute("message", "성공적으로 페이지 수정됨");
+		attr.addFlashAttribute("message", "성공적으로 페이지 추가됨");
 		attr.addFlashAttribute("alertClass", "alert-success"); // 부트스트랩 클래스 - 경고창(성공색)
 		
 		// 슬러그 검사(슬러그 미입력시 제목을 소문자로 공백은 - 으로 대체, 입력시에도 소문자 공백은 - 대체)
@@ -78,7 +78,7 @@ public class AdminPageController {
 		// 유효성 검사 에러가 있으면 다시 돌아감
 		if(bindingResult.hasErrors()) return "admin/pages/edit";
 		// 검사 통과시
-		attr.addFlashAttribute("message", "성공적으로 페이지 추가됨");
+		attr.addFlashAttribute("message", "성공적으로 페이지 수정됨");
 		attr.addFlashAttribute("alertClass", "alert-success"); // 부트스트랩 클래스 - 경고창(성공색)
 		
 		// 슬러그 검사(슬러그 미입력시 제목을 소문자로 공백은 - 으로 대체, 입력시에도 소문자 공백은 - 대체)

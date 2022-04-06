@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="/fragments/head :: head-admin"></head>
+  <body>
+    <nav th:replace="/fragments/nav :: nav-admin"></nav>
+
+    <main role="main" class="container">
+      <div class="display-2 mt-5">categories</div>
+      <a th:href="@{/admin/categories/add}" class="btn btn-primary my-3">추가하기</a>
+      <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
+      <div th:if="${!categories.empty}">
+        <table class="table sorting" id="categories">
+          <tr class="home">
+            <th>카테고리명</th>
+            <th>수정</th>
+            <th>삭제</th>
+          </tr>
+          <tr th:each="category : ${categories}" th:id="'id_'+${category.id}" th:class="${category.slug}">
+            <td th:text="${category.name}"></td>
+            <td><a th:href="@{'/admin/categories/edit/' + ${category.id}}">수정</a></td>
+            <!-- slug가 home은 삭제가 되지 않도록 home이 아닐 경우에만 삭제가 나타나도록 함 -->
+            <!-- th:if는 참이어야함 -->
+            <td><a class="deleteConfirm" th:href="@{'/admin/categories/delete/' + ${category.id}}">삭제</a></td>
+          </tr>
+        </table>
+      </div>
+      <div th:if="${categories.empty}">
+        <div class="display-4">현재 페이지가 없습니다.</div>
+      </div>
+    </main>
+
+    <footer th:replace="/fragments/footer :: footer"></footer>
+    <script>
+      $('table#categories').sortable({
+        items: 'tr',
+        placeholder: 'ui-state-highlight',
+        update: function () {
+          //순서가 바뀔때 이벤트 발생
+          let ids = $('table#categories').sortable('serialize'); //id를 문자열로 순서대로 시리얼라이즈
+          let url = '/admin/categories/reorder';
+
+          $.post(url, ids, function (data) {
+            //AJAX post로 data(문자열) 전송하고 결과를 data로 받는다
+            console.log(data); //콘솔확인
+          });
+        },
+      });
+    </script>
+  </body>
+</html>
