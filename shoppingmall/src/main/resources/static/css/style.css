@@ -1,3 +1,8 @@
 span.error {
   color: coral !important;
 }
+
+table.sorting tr:not(.home) {
+  cursor: pointer;
+  /* 옮길 수 있는 행만 마우스 포인터 표시 */
+}

@@ -7,20 +7,22 @@
     <main role="main" class="container">
       <div class="display-2 mt-5">pages</div>
       <a th:href="@{/admin/pages/add}" class="btn btn-primary my-3">추가하기</a>
-
+      <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
       <div th:if="${!pages.empty}">
-        <table class="table" id="pages">
+        <table class="table sorting" id="pages">
           <tr class="home">
             <th>제목</th>
             <th>슬러그</th>
             <th>수정</th>
             <th>삭제</th>
           </tr>
-          <tr th:each="page : ${pages}">
+          <tr th:each="page : ${pages}" th:id="'id_'+${page.id}" th:class="${page.slug}">
             <td th:text="${page.title}"></td>
             <td th:text="${page.slug}"></td>
-            <td><a href="@{'/admin/pages/edit' + ${page.id}}">수정</a></td>
-            <td><a href="@{'/admin/pages/delete' + ${page.id}}">삭제</a></td>
+            <td><a th:href="@{'/admin/pages/edit/' + ${page.id}}">수정</a></td>
+            <!-- slug가 home은 삭제가 되지 않도록 home이 아닐 경우에만 삭제가 나타나도록 함 -->
+            <!-- th:if는 참이어야함 -->
+            <td><a class="deleteConfirm" th:if="${page.slug != 'home'}" th:href="@{'/admin/pages/delete/' + ${page.id}}">삭제</a></td>
           </tr>
         </table>
       </div>
@@ -30,5 +32,21 @@
     </main>
 
     <footer th:replace="/fragments/footer :: footer"></footer>
+    <script>
+      $('table#pages').sortable({
+        items: 'tr:not(.home)', // home클래스를 제외한 tr행들이 sorting가능하게함
+        placeholder: 'ui-state-highlight',
+        update: function () {
+          //순서가 바뀔때 이벤트 발생
+          let ids = $('table#pages').sortable('serialize'); //id를 문자열로 순서대로 시리얼라이즈
+          let url = '/admin/pages/reorder';
+
+          $.post(url, ids, function (data) {
+            //AJAX post로 data(문자열) 전송하고 결과를 data로 받는다
+            console.log(data); //콘솔확인
+          });
+        },
+      });
+    </script>
   </body>
 </html>
