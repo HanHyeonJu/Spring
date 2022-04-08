@@ -43,7 +43,7 @@ public class AdminProductController {
 	@GetMapping
 	public String index(Model model, @RequestParam(value="page", defaultValue="0") int page) {
 		
-		int perPage = 3; // 한 페이지에 최대 6개 출력
+		int perPage = 6; // 한 페이지에 최대 6개 출력
 		Pageable pageable = PageRequest.of(page, perPage); // 도메인 인터페이스 해야함(Pageable), (표시할페이지, 현재페이지에 맞게(6))
 		
 		

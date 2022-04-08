@@ -92,7 +92,6 @@ public class AdminPageController {
 			attr.addFlashAttribute("page",page);
 		} else {
 			page.setSlug(slug); // 소문자나 -으로 수정된 slug update
-			page.setSorting(100); // 기본 sorting값
 			pageRepo.save(page);
 		}
 		

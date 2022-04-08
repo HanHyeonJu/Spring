@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="/fragments/head :: head"></head>
+  <body>
+    <nav th:replace="/fragments/nav :: nav-front"></nav>
+
+    <main role="main" class="container-fluit">
+      <!-- 한 row안에 비율 맞춰서 col 작성 -->
+      <div class="row">
+        <div th:replace="/fragments/categories :: categories"></div>
+        <div class="col"></div>
+        <!-- utext는 tag를 같이 표시 -->
+        <div class="col-7 mt-5" th:utext="${page.content}"></div>
+        <div class="col"></div>
+      </div>
+    </main>
+    <footer th:replace="/fragments/footer :: footer"></footer>
+  </body>
+</html>

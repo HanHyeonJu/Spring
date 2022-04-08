@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="/fragments/head :: head-todo"> </head>
+
+  <body>
+    <nav th:replace="/fragments/nav :: 네브바"></nav>
+
+    <main role="main" class="container">
+      <div class="display-2 mt-3" style="text-align:center;">
+        TODOLIST
+      </div>
+
+      <div th:if="${!todoList.empty}">
+        <div  class="display-3 mt-3">
+          <a th:href="@{/todos/new}" class="btn btn-primary my-3" style="float:right;">추가하기</a>
+          </div>
+          <div th:if="${message}" th:class="${'alert ' + alertClass}" th:text="${message}"></div>
+        <table class="table" id="todoList">
+          <tr>
+            <th>TODO</th>
+            <th>시작날짜</th>
+            <th>목표날짜</th>
+            <th>진행상황</th>
+            <th>수 정</th>
+            <th>삭 제</th>
+          </tr>
+          <tr th:each="todo : ${todoList}">
+            <td th:text="${todo.title}"></td>
+            <td th:text="${todo.startDate}"></td>
+            <td th:text="${todo.targetDate}"></td>
+            <td th:text="${todo.stage}"></td>
+            <td><a th:href="@{'/todos/edit/' + ${todo.id}}">수정</a></td>
+            <td><a class="deleteConfirm" th:href="@{'/todos/delete/' + ${todo.id}}">삭제</a></td>
+          </tr>
+        </table>
+      </div>
+      <br><br/>
+      <div th:if="${todoList.empty}" style="text-align: center; margin-top: -2em;">
+        <a th:href="@{/todos/new}" class="btn btn-outline-dark my-3" style="float:center;">추가하기</a>
+        <div class="display-4 mt-3">
+          <h3>나만의 TODOLIST를 만들어보세요</h3>
+          </div>
+        <div class="img">
+          <img th:src="@{/image/todo.jpg}" style="display: block; margin:auto;"/>
+        </div>
+      </div>
+    </main>
+
+    <footer th:replace="/fragments/footer :: footer"></footer>
+  </body>
+</html>
