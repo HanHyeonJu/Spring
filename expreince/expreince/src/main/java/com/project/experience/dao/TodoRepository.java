@@ -6,4 +6,6 @@ import com.project.experience.entities.Todo;
 
 public interface TodoRepository extends JpaRepository<Todo, Integer>{
 
+	Todo findBySlugAndIdNot(String title, int id);
+
 }

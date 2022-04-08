@@ -11,6 +11,7 @@
       <div th:if="${!todoList.empty}">
         <div class="display-3 mt-3">
           <a th:href="@{/todos/new}" class="btn btn-primary my-3" style="float: right">추가하기</a>
+          <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
         </div>
 
         <table class="table" id="todoList">
@@ -31,6 +32,28 @@
             <td><a class="deleteConfirm" th:href="@{'/todos/delete/' + ${todo.id}}">삭제</a></td>
           </tr>
         </table>
+
+        <nav class="mt-3" th:if="${count > perPage}">
+          <ul class="pagination">
+            <li class="page-item" th:if="${page > 0}">
+              <a class="page-link" th:href="${#httpServletRequest.requestURI} + '?page=__${page-1}__'" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <!-- page가 현재 number와 같으면 active 아니면 아무것도 안 줌 -->
+            <li class="page-item" th:classappend="${page == number} ? 'active' : ''" th:each="number:${#numbers.sequence(0, pageCount-1)}">
+              <!-- number는 실제로 0이지만 보기 좋게 1로 출력 -->
+              <a class="page-link" th:href="@{${#httpServletRequest.requestURI}} + '?page=__${number}__'" th:text="${number+1}"></a>
+            </li>
+            <li class="page-item" th:if="${page < pageCount-1}">
+              <a class="page-link" th:href="${#httpServletRequest.requestURI} + '?page=__${page+1}__'" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        
+      </div>
       </div>
       <br /><br />
       <div th:if="${todoList.empty}" style="text-align: center; margin-top: -2em">
