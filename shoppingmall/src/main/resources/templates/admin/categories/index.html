@@ -32,7 +32,7 @@
     <footer th:replace="/fragments/footer :: footer"></footer>
     <script>
       $('table#categories').sortable({
-        items: 'tr',
+        items: 'tr:not(.home)',
         placeholder: 'ui-state-highlight',
         update: function () {
           //순서가 바뀔때 이벤트 발생

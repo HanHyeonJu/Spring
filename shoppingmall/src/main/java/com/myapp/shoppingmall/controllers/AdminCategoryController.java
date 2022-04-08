@@ -29,7 +29,8 @@ public class AdminCategoryController {
 	
 	@GetMapping
 	public String index(Model model) {
-		List<Category> categories = categoryRepo.findAll();
+		// findAll에서 OrderBySorting을 추가하는 이유는 순서를 변경한 후 새로고침 했을 때도 list가 보이는 페이지에서 순서가 변경된 모습으로 보이게 하기 위해서이다
+		List<Category> categories = categoryRepo.findAllByOrderBySortingAsc();
 		model.addAttribute("categories", categories);
 		return "admin/categories/index";
 	}

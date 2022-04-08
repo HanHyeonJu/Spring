@@ -6,3 +6,8 @@ table.sorting tr:not(.home) {
   cursor: pointer;
   /* 옮길 수 있는 행만 마우스 포인터 표시 */
 }
+/* ck 에디터 높이 */
+.ck.ck-content {
+  height: 15em;
+  /* 글자 15개 높이정도 */
+}
