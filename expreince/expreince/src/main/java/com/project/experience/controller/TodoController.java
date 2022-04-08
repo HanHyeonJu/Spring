@@ -38,10 +38,13 @@ public class TodoController {
 	
 	@PostMapping("/new")
 	public String create(@Valid Todo todo, BindingResult bindingResult, RedirectAttributes attr) {
-		if(bindingResult.hasErrors()) return "todos/new";
-		attr.addFlashAttribute("message", "성공적으로 카테고리가 저장됨");
+		
+		if(bindingResult.hasErrors()) return "todos/todo-new";
+		
+		attr.addFlashAttribute("message", "성공적으로 저장됨");
 		attr.addFlashAttribute("alertClass", "alert-success"); 
 		
+		todoRepo.save(todo);
 		return "redirect:/todos";
 	}
 }

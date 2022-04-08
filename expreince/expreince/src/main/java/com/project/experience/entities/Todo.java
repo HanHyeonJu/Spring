@@ -1,7 +1,5 @@
 package com.project.experience.entities;
 
-import java.time.LocalDateTime;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,15 +28,13 @@ public class Todo {
 		
 		private String stage; 
 		
-		@NotBlank(message="시작날짜를 입력해주세요")
 		@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		@Column(name = "start")
-		private LocalDateTime startDate;
+		private String startDate;
 		
-		@NotBlank(message="마감날짜를 입력해주세요")
 		@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		@Column(name = "target")
-		private LocalDateTime targetDate;
+		private String targetDate;
 		
 		private String description;
 }
