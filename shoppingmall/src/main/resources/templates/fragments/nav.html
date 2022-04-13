@@ -10,6 +10,18 @@
         <a class="nav-link" th:if="${page.slug != 'home'}" th:href="@{'/'+${page.slug}}" th:text="${page.title}"></a>
       </li>
     </ul>
+    <ul class="navbar-nav" th:if="${principal == null}">
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{'/register'}" th:text="가입하기"></a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{'/login'}" th:text="로그인"></a>
+      </li>
+    </ul>
+    <form th:if="${principal != null}" th:action="@{/logout}" method="post">
+      <span class="text-white" th:text="${'Hi ' + principal}"></span>
+      <button class="btn btn-secondary ml-2">로그아웃</button>
+    </form>
   </div>
 </nav>
 
@@ -31,5 +43,9 @@
         <a class="nav-link" th:href="@{/admin/products}">Products</a>
       </li>
     </ul>
+    <form th:if="${principal != null}" th:action="@{/logout}" method="post">
+      <span class="text-white" th:text="${'관리자 ' + principal}"></span>
+      <button class="btn btn-secondary ml-2">로그아웃</button>
+    </form>
   </div>
 </nav>

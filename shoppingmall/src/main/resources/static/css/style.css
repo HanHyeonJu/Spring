@@ -1,13 +1,29 @@
 span.error {
   color: coral !important;
+  /* 에러 메세지를 표시할 색 */
 }
 
 table.sorting tr:not(.home) {
   cursor: pointer;
-  /* 옮길 수 있는 행만 마우스 포인터 표시 */
+  /* 마우스 포인터 표시(옮길수 있는 행만) */
 }
+
+.ui-state-highlight {
+  border: 1px dashed #ccc;
+}
+
 /* ck 에디터 높이 */
 .ck.ck-content {
   height: 15em;
   /* 글자 15개 높이정도 */
+}
+
+div.productAdded {
+  position: absolute;
+  bottom: 5px;
+  left: 10em;
+}
+
+.hide {
+  display: none;
 }

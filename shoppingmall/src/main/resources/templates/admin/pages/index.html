@@ -33,6 +33,12 @@
 
     <footer th:replace="/fragments/footer :: footer"></footer>
     <script>
+      let token = $("meta[name='_csrf']").attr('content');
+      let header = $("meta[name='_csrf_header']").attr('content');
+      $(document).ajaxSend(function (e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+      });
+
       $('table#pages').sortable({
         items: 'tr:not(.home)', // home클래스를 제외한 tr행들이 sorting가능하게함
         placeholder: 'ui-state-highlight',

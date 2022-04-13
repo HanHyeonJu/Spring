@@ -5,6 +5,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.experience.dao.TodoRepository;
@@ -26,9 +30,25 @@ public class TodoController {
 	private TodoRepository todoRepo;
 	
 	@GetMapping
-	public String todoList(Model model) {
-		List<Todo> todoList = todoRepo.findAll();
+	public String todoList(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+		
+		int perPage = 4; // 한 페이지에 최대 10개
+		Pageable pageable = PageRequest.of(page, perPage);
+		
+		Page<Todo> todo = todoRepo.findAll(pageable);
+		model.addAttribute("todo", todo);
+		
+		List<Todo> todoList = todoRepo.findAllByOrderByTargetDateDesc();
 		model.addAttribute("todoList",todoList);
+		
+		long count = todoRepo.count();
+		double pageCount = Math.ceil((double)count/(double)perPage);
+		
+		model.addAttribute("pageCount", pageCount);
+		model.addAttribute("perPage", perPage);
+		model.addAttribute("count", count);
+		model.addAttribute("page", page);
+		
 		return "todos/todo-list";
 	}
 	
@@ -45,7 +65,7 @@ public class TodoController {
 		attr.addFlashAttribute("message", "성공적으로 저장되었습니다");
 		attr.addFlashAttribute("alertClass", "alert-success"); 
 		
-		Todo todoExist = todoRepo.findBySlugAndIdNot(todo.getTitle(), todo.getId());
+		Todo todoExist = todoRepo.findByTitleAndIdNot(todo.getTitle(), todo.getId());
 		
 		if(todoExist != null) {
 			attr.addFlashAttribute("message","존재하는 todo입니다");
@@ -73,7 +93,7 @@ public class TodoController {
 		attr.addFlashAttribute("message", "성공적으로 수정되었습니다");
 		attr.addFlashAttribute("alertClass", "alert-success"); 
 		
-		Todo todoExist = todoRepo.findBySlugAndIdNot(todo.getTitle(), todo.getId());
+		Todo todoExist = todoRepo.findByTitleAndIdNot(todo.getTitle(), todo.getId());
 		
 		if(todoExist != null) {
 			attr.addFlashAttribute("message","존재하는 todo입니다");
