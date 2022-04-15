@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.myapp</groupId>
-	<artifactId>mybatis_springboot</artifactId>
+	<artifactId>mybatis-springboot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mybatis_springboot</name>
+	<name>mybatis-springboot</name>
 	<description>mybatis</description>
 	<properties>
 		<java.version>11</java.version>

@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+//import com.project.experience.dao.SearchMapper;
 import com.project.experience.dao.TodoRepository;
 import com.project.experience.entities.Todo;
+import com.project.experience.service.SearchService;
 
 @Controller
 @RequestMapping("/todos")
@@ -29,10 +31,13 @@ public class TodoController {
 	@Autowired
 	private TodoRepository todoRepo;
 	
+	@Autowired
+	private SearchService service;
+	
 	@GetMapping
 	public String todoList(Model model, @RequestParam(value="page", defaultValue="0") int page) {
 		
-		int perPage = 4; // 한 페이지에 최대 10개
+		int perPage = 5; 
 		Pageable pageable = PageRequest.of(page, perPage);
 		
 		Page<Todo> todo = todoRepo.findAll(pageable);
@@ -114,5 +119,16 @@ public class TodoController {
 		attr.addFlashAttribute("alertClass", "alert-success");	
 		
 		return "redirect:/todos";
+	}
+	
+	
+	@GetMapping("/search")
+	public String searcgTodo(@RequestParam(value="keyword") String keyword, Model model) {
+		
+		List<Todo> todoSearch = service.search(keyword);
+		model.addAttribute("todoSearch", todoSearch);
+		
+		System.out.println(todoSearch);
+		return "todos/todo-search";
 	}
 }

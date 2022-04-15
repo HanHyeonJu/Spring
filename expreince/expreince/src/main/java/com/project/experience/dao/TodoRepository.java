@@ -12,4 +12,6 @@ public interface TodoRepository extends JpaRepository<Todo, Integer>{
 
 	List<Todo> findAllByOrderByTargetDateDesc();
 
+	List<Todo> findByTitleContaining(String keyword);
+
 }
