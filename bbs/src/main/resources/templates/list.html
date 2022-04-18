@@ -9,8 +9,41 @@
       <nav th:replace="fragments/nav :: 네브"></nav>
       <!-- 컨텐츠 시작 -->
       <div class="container-fluid py-4">
+        <a th:href="@{/board/enroll}" class="btn btn-success">추가하기</a>
         <!-- 빈 컨텐츠 (여기서 시작)-->
-        <h1>리스트 페이지</h1>
+        <div class="card">
+          <div class="table-responsive">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">no</th>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">title</th>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">Author</th>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">등록일</th>
+                  <th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">수정일</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr th:each=" board  : ${boardList}">
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs" th:text="${board.bno}"></span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <a th:href="@{/board/get(bno=${board.bno})}">
+                      <span class="text-secondary text-xs" th:text="${board.title}"></span>
+                    </a>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs" th:text="${board.writer}"></span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs" th:text="${#temporals.format(board.regdate , 'yyyy-MM-dd a hh:mm:ss')}"></span>
+                  </td>
+                  <td class="align-middle text-center">
+                    <span class="text-secondary text-xs" th:text="${#temporals.format(board.updateDate , 'yyyy-MM-dd a hh:mm:ss')}"></span>
+                  </td>
+                </tr>
+              </tbody>
       </div>
     </main>
 
