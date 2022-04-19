@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.myapp.bbs.model.BoardVO;
+import com.myapp.bbs.model.Criteria;
+import com.myapp.bbs.model.PageMakerDTO;
 import com.myapp.bbs.service.BoardService;
+
 
 @Controller
 @RequestMapping("/board")
@@ -22,9 +25,23 @@ public class BoardController {
 		this.boardService = boardService;
 	}
 
+//	@GetMapping("/list")
+//	public String boardListGet(Model model) {
+//		model.addAttribute("boardList", boardService.getList());
+//		return "list";
+//	}
+	
+	/* 페이징 적용 */
 	@GetMapping("/list")
-	public String boardListGet(Model model) {
-		model.addAttribute("boardList", boardService.getList());
+	public String boardListGet(Criteria cri, Model model) {
+		// boardList에 페이징된 게시글을 전잘
+		model.addAttribute("boardList", boardService.getListPaging(cri));
+		
+		int total = boardService.getTotal();
+		PageMakerDTO pmk = new PageMakerDTO(cri, total); // pmk객체 생성시 변수 계산(?)
+		
+		model.addAttribute("pmk", pmk); // 페이지네이션을 위한 pmk 객체 전달
+		
 		return "list";
 	}
 	

@@ -25,5 +25,27 @@ public class BoardVO {
 	
 	/* 수정 날짜 */
 	private LocalDateTime updateDate;
+	
+	public BoardVO() {
+		
+	}
+	
+	public BoardVO(int bno, String title, String content, String writer, LocalDateTime regdate,
+			LocalDateTime updateDate) {
+		super();
+		this.bno = bno;
+		this.title = title;
+		this.content = content;
+		this.writer = writer;
+		this.regdate = regdate;
+		this.updateDate = updateDate;
+	}
+	
+
+	@Override
+	public String toString() {
+		return "BoardVO [bno=" + bno + ", title=" + title + ", content=" + content + ", writer=" + writer + ", regdate="
+				+ regdate + ", updateDate=" + updateDate + "]";
+	}	
 
 }

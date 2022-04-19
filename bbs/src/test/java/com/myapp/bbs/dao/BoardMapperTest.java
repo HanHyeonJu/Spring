@@ -1,5 +1,7 @@
 package com.myapp.bbs.dao;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.test.annotation.Rollback;
 
-//import com.myapp.bbs.model.BoardVO;
+import com.myapp.bbs.model.Criteria;
+
+import com.myapp.bbs.model.BoardVO;
 
 import lombok.extern.java.Log;
 
@@ -63,10 +67,18 @@ public class BoardMapperTest {
 //		log.info("결과: " + result);
 		
 		/* 게시판 삭제 */
-		int result = boardMapper.delete(5);
-		log.info("결과: " + result);
+//		int result = boardMapper.delete(5);
+//		log.info("결과: " + result);
 		
+		/* 게시판 페이징 */
+		Criteria cri = new Criteria(); // 기본 생성자 생성(1, 10)(pageNum, amount)
+		
+		cri.setPageNum(2); // 2번재 페이지부터라고 설정(181~190) - amount를 설정해주지 않았을 때
+		cri.setAmount(5); // 1번째 페이지가 (196~200)이 되고 2번째 페이지가 (191~195)가 되면서 2번재 페이지 출력
+		
+	    List<BoardVO> list = boardMapper.getListPaging(cri);
+	     
+	    list.forEach(board -> System.out.println(board.toString()));
 	}
-	
 	
 }
