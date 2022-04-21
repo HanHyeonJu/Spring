@@ -38,7 +38,7 @@
                             <input type="text" class="form-control" th:field="*{writer}" readonly />
                           </div>
                           <div class="text-center">
-                            <a th:href="@{/board/list}" class="btn btn-danger">목록</a>
+                            <a th:href="@{/board/list} + '?pageNum=__${cri.pageNum}__'" class="btn btn-success page">수정취소</a>
                             <button type="submit" class="btn btn-success">수정완료</button>
                           </div>
                           <!-- form 안 쓸 때 @{/board/modify(bno=${board.bno})} 주소 -->
@@ -54,5 +54,22 @@
     <!-- 오른쪽 숨김창 , JS 링크들 -->
     <hidden th:replace="fragments/hidden :: 숨김창"></hidden>
     <jslink th:replace="fragments/jslink :: 링크"></jslink>
+    <script>
+      /* a태그들에 키워드를 추가해서 자바스크립트로 요청한다. (목록, 수정 클릭시) */
+      const links = document.querySelectorAll('a.page');
+
+      // 각각의 a태그를 클릭했을때 => 함수실행
+      link.addEventListener('click', function (e) {
+          e.preventDefault(); //a태그의 이동 요청이 취소됨
+          let keyword = '[[${cri.keyword}]]';
+          let type = '[[${cri.type}]]';
+          if(keyword.trim()){
+            keyword = '&keyword=' + keyword;
+            type = '&type=' + type;
+          }
+          location.href = this.getAttribute('href') + keyword + type; // 클릭한 a태그의 주소에 + 키워드로 요청함
+      });
+     
+    </script>
   </body>
 </html>

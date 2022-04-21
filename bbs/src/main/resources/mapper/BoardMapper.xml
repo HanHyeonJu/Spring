@@ -21,13 +21,22 @@
 	</select>
 	
 	<!-- 게시물 목록(페이징) : skip, amount는 Criteria 객체에서 입력됨  -->
+	<!-- 키워드로 검색했을 때 페이징되는 리스트가 다르므로 이프문 추가 -->
 	<!-- 서브쿼리 이름 붙여줘야 함 -->
+	<!-- refid = reference id -->
 	<select id = "getListPaging" resultType="BoardVO">
 	
-		select * from(
-				select bno, title, writer, regdate, updatedate
-				from board order by bno desc) as T1
-		limit #{skip}, #{amount}
+		select * from (
+                select bno, title, writer, regdate, updatedate  
+                from board 
+                
+                <if test="keyword != null">
+                	<include refid="criteria"></include>              
+                </if>
+                
+                order by bno desc
+                )  as T1
+        limit #{skip}, #{amount}
 		
 	</select>
 	
@@ -46,15 +55,43 @@
 		
 	</update>
 	
+	<!-- 게시판 삭제 -->
 	<delete id="delete">
 	
 		delete from board where bno = #{bno}
 		
 	</delete>
 	
+	<!-- 검색 조건문 where절을 각각의 type이 있으면 추가해준다 -->
+	<sql id="criteria">
+        <trim prefix="where (" suffix=")" prefixOverrides="OR">
+        <!-- type에서 하나씩 빼서 typeArr배열로 만들어서 셀렉트 예를 들면 {T,C}가 있으면 제목, 내용 같이 검색 가능 하나만 있으면 하나로만 검색, typeArr에 있는 type의 갯수만큼 반복 -->
+            <foreach collection="typeArr" item="type">
+                <trim prefix="OR">
+                    <choose>
+                        <when test="type == 'T'.toString()">
+                            title like concat('%',#{keyword},'%') 
+                        </when>
+                        <when test="type == 'C'.toString()">
+                            content like concat('%',#{keyword},'%') 
+                        </when>
+                        <when test="type == 'W'.toString()">
+                            writer like concat('%',#{keyword},'%' )
+                        </when>
+                    </choose>
+                </trim>
+            </foreach>
+        </trim>
+	</sql>
+
+	
+	<!-- 게시물 총 갯수, 키워드로 검색한 경우의 게시물 갯수 -->
 	<select id="getTotal" resultType="int">
 	
 		select count(*) from board
+		<if test="keyword != null">
+        	<include refid="criteria"></include>                
+        </if>
 	
 	</select>
 	

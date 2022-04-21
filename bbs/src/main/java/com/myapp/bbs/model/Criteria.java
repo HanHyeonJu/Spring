@@ -16,10 +16,18 @@ public class Criteria {
 	/* 스킵 할 게시물 수( (pageNum-1) * amount ) */
 	private int skip;
 	
-	/* 기본 생성자 -> 기봅 세팅 : pageNum = 1, amount = 10 */
+	/* 💥 검색어 키워드 💥 */   
+	private String keyword;	
+	
+	/* 검색 타입(뷰에서 선택됨) */
+	private String type;
+	
+	/* 검색 타입 배열(type을 배열로 변환) */
+	private String[] typeArr;
+	
+	/* 기본 생성자 -> 기본 세팅 : pageNum = 1, amount = 10 */
 	public Criteria() {
 		this(1,10);
-		this.skip = 0;
 	}
 	
 	/* 생성자 => 원하는 pageNum, 원하는 amount */
@@ -29,16 +37,34 @@ public class Criteria {
 		this.skip = (pageNum-1)*amount;
 	}
 
+	
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+		// 검색할 타입만 설정되면 typeArr은 자동으로 생성
+		this.typeArr = type.split("");
+	}
+
+	public String[] getTypeArr() {
+		return typeArr;
+	}
+
+	public void setTypeArr(String[] typeArr) {
+		this.typeArr = typeArr;
+	}
+
 	public int getPageNum() {
 		return pageNum;
 	}
 	
-	// 새로 페이지 숫자를 설정했을 때 skpt도 계산해줌
+	// 새로 페이지 숫자를 설정했을 때 skip도 계산해줌
 	public void setPageNum(int pageNum) {
-		
-		this.skip= (pageNum-1)*this.amount;
-		
 		this.pageNum = pageNum;
+		this.skip = (pageNum-1) * amount;
 	}
 
 	// 페이지당 갯수를 바꿀경우에도  스킵을 다시 계산
@@ -46,6 +72,7 @@ public class Criteria {
 		return amount;
 	}
 
+	//페이지당 갯수를 바꿀경우에도 스킵을 다시 계산
 	public void setAmount(int amount) {
 		
 		this.skip= (this.pageNum-1)*amount;
@@ -60,6 +87,14 @@ public class Criteria {
 
 	public void setSkip(int skip) {
 		this.skip = skip;
+	}
+	
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 
 	@Override

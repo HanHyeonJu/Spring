@@ -47,9 +47,7 @@ public class PageMakerDTO {
 		this.prev = this.startPage > 1;
 		
 		/* 다음 페이지의 참 : realEnd페이지가 end페이지보다 값이 큰 경우는 참*/
-		this.next = this.endPage < realEnd;
-		
-		
+		this.next = this.endPage < realEnd;	
 	}
 
 	public int getStartPage() {
