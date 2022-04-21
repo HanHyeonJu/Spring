@@ -13,12 +13,12 @@ import com.myapp.bbs.model.Criteria;
 
 import com.myapp.bbs.model.BoardVO;
 
-import lombok.extern.java.Log;
+//import lombok.extern.java.Log;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = Replace.NONE) // 실제 DB로 테스트
 @Rollback(value = false) // 테스트할 때 롤백 처리 하지 않음
-@Log
+//@Log
 public class BoardMapperTest {
 	
 	// JUNIT 5버전 테스트

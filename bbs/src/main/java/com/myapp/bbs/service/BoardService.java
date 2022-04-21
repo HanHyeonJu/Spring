@@ -10,9 +10,6 @@ public interface BoardService {
 	/* 게시판 등록 */
 	public void enroll(BoardVO board);
 	
-	/* 게시판 목록 */
-	public List<BoardVO> getList();
-	
 	/* 게시판 목록(페이징 적용) : pageNum, amount를 입력받아 객체 cri 생성 객체의 값이 없으면 기본(1,10) */
 	public List<BoardVO> getListPaging(Criteria cri);
 	
