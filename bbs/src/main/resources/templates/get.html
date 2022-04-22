@@ -79,20 +79,23 @@
                         </div>
                     </div>
                   </div>
-
+                  <div class="row mt-2">
+                    <div class="col-md-10 me-auto ms-auto">
+                      <div class="card card-plain">
+                        <ul class="list-group" id="reply-list">
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
               </div>
-              <div class="row mt-2">
-                <div class="col-md-10 me-auto ms-auto">
-                  <div class="card card-plain">
-                    <ul class="list-group" id="reply-list">
-                      
-                    </ul>
+             
           </section>
     </main>
 
     <!-- 오른쪽 숨김창 , JS 링크들 -->
     <hidden th:replace="fragments/hidden :: 숨김창"></hidden>
     <jslink th:replace="fragments/jslink :: 링크"></jslink>
+    <script th:src="@{/js/Fetch-API.js}"></script>
     <script>
       function deleteConfirm() {
         if (confirm('정말로 삭제할까요?')) {
@@ -116,10 +119,109 @@
         });
       });
 
+      // Fetch api 라이브러리 객체
+      const http = new EasyHTTP();
+
       /* 댓글달기 버튼 클릭시 이벤트 */
       const replyButton = document.getElementById('reply-btn');
       replyButton.addEventListener('click', function(){
         console.log('클릭했음');
+        const data = {
+          reply_bno: '[[${board.bno}]]',
+          content: document.getElementById('content').value,
+          writer: document.getElementById('writer').value,
+        };
+        /* res? 왜 바꿔주는지? */
+        http.post('/reply', data)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
+
+        location.reload(); // 댓글 입력이 완료되면 새로고침해줌
+      })
+
+      // el = this
+      function updateReply(el){
+        //console.log(el);
+        // ??????????????
+        // .parentElement는 el의 윗범위(div)를 선택해줌(?) => console로 확인
+        // .previousElementSibling 바로 전 태그 범위(위) .nextElementSibling 바로 다음 태그 범위(아래)
+        const 댓글내용 = el.parentElement.previousElementSibling.previousElementSibling;
+        const 댓글수정 = el.parentElement.previousElementSibling; // 수정할 수 있는 textarea창
+        const 삭제버튼 = el.nextElementSibling;
+        if(el.textContent == '수정'){ // 버튼 이름이 수정이면
+          댓글내용.style.display = 'none'; // style태그가 없어짐
+          댓글수정.style.display = 'block'; // textarea가 보여짐
+          삭제버튼.style.visibility = 'hidden'; // 완전히 삭제하지 않고 모습만 숨김
+          el.textContent = '수정완료'; // 수정버튼이 수정완료버튼으로 변경됨
+          // 수정완료버튼으로 바뀌는 것 까지
+        } else { 
+          // 수정완료버튼을 누른 이후
+          // 수정이 되었기 때문에 서버로 update 요청
+          const data = {
+            // data-id => dataset.id
+            reply_no: el.dataset.id,
+            content: 댓글수정.value,
+          };
+
+          http .put('/reply', data)
+               .then((res) => (댓글내용.textContent = res.content))
+               .catch((err) => console.log(err));
+          
+          // 수정된 댓글내용 보이게, 삭제, 수정버튼 다시 보이게하기
+          댓글내용.style.display = 'block'; // p태그가 보여짐
+          댓글수정.style.display = 'none'; // textarea가 사라짐
+          삭제버튼.style.visibility = 'visible'; // 삭제버튼 다시 나타남
+          el.textContent = '수정';
+        } // 시간은 수정 안 해줘서 새로고침해야 수정시간 보임
+      }
+
+      function deleteReply(el){
+        if(confirm('정말 삭제하겠습니까?')){
+           http
+             .delete('/reply/' + el.dataset.id)
+             .then((data) => console.log(data))
+             .catch((err) => console.log(err));
+          // 태그객체 삭제 => 새로고침 안 하고 삭제한 댓글은 안 보이게 하기 위함
+          el.parentElement.parentElement.remove();
+        }
+      }
+
+      // res= items 결과가 items로 넘어감
+      function replyListView(items){
+        // 댓글을 보여줄 태그(ul) 객체
+        const replyList = document.getElementById('reply-list');
+        let lis = ''; // 댓글들 변수 선언(댓글리스트 변수)
+        //console.log(items);
+        // 출력할 데이터 변수 선언
+        items.forEach(function(item){
+          let writer = item.writer;
+          let content = item.content;
+          let updateTime = item.updated_at;
+          let id = item.reply_no;
+
+          // updateReply{this} this는 선택한 댓글 객체를 나타냄, 댓글들 중 어느 댓글을 선택했는지 인지해야하기 때문에 넣어줌
+          let li = `<li class="list-group-item" style="position: relative">
+              <div>${writer}  ( ${updateTime} ) </div>
+              <p class="mb-0">${content}</p>
+              <textarea class="w-100" style="display:none">${content}</textarea>
+              <div style="position: absolute; top: 10px; right: 10px">
+                <button onclick="updateReply(this)" data-id="${id}" class="badge bg-gradient-info ms-auto">수정</button>
+                <button onclick="deleteReply(this)" data-id="${id}" class="badge bg-gradient-danger">삭제</button>
+              </div>
+            </li>`;
+          lis += li; // 각각의 댓글데이터가 들어간 li태그를 lis에 더해준다
+        });
+
+        // 댓글 리스트에 실제 댓글들을 넣어준다
+        replyList.innerHTML = lis;
+      }
+
+      // html문서가 준비되면 실행하기 이벤트('DOMContentLoaded') - 댓글보기 버튼 클릭할 필요 없이 바로 댓글리스트 출력 위함
+      document.addEventListener('DOMContentLoaded', function(){
+        //console.log('준비됨!'); 테스트
+        http.get('/reply/'+'[[${board.bno}]]')
+            .then((res) => replyListView(res))
+            .catch((err) => console.log(err));
       })
     </script>
   </body>
