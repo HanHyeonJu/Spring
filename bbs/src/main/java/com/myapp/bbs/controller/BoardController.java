@@ -1,5 +1,7 @@
 package com.myapp.bbs.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.myapp.bbs.model.BoardVO;
 import com.myapp.bbs.model.Criteria;
 import com.myapp.bbs.model.PageMakerDTO;
+import com.myapp.bbs.model.User;
 import com.myapp.bbs.service.BoardService;
 
 
@@ -52,8 +55,11 @@ public class BoardController {
 	}
 	
 	@PostMapping("/enroll")
-	public String boardEnrollPost(BoardVO board, RedirectAttributes attr) {
+	public String boardEnrollPost(BoardVO board, RedirectAttributes attr, HttpSession session) {
 //		log.info("BoardVO : " + board);
+		User user = (User)session.getAttribute("user");
+		
+		board.setWriter(user.getName());
 		boardService.enroll(board);
 		attr.addFlashAttribute("message", "게시글 등록 성공");
 		return"redirect:/board/list";

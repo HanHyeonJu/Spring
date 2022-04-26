@@ -9,7 +9,9 @@
       <nav th:replace="fragments/nav :: 네브"></nav>
       <!-- 컨텐츠 시작 -->
       <div class="container-fluid py-4">
-        <a th:href="@{/board/enroll}" class="btn btn-success">추가하기</a>
+        <div class="enroll" th:if="${userName != null}">
+          <a th:href="@{/board/enroll}" class="btn btn-success">추가하기</a>
+        </div>
         <!-- 빈 컨텐츠 (여기서 시작)-->
         <div class="card">
           <div class="table-responsive">

@@ -40,10 +40,13 @@
                           </tr>
                         </table>
                       </div>
-                      <div class="card-footer bg-white text-center pt-0 px-lg-2 px-1">
+                      <div class="card-footer bg-white text-center pt-0 px-lg-2 px-1" th:if="${userName == board.writer}">
                         <a th:href="@{/board/list} + '?pageNum=__${cri.pageNum}__'" class="btn btn-success page">목록</a>
                         <a th:href="@{/board/modify(bno=${board.bno})} + '&pageNum=__${cri.pageNum}__'" class="btn btn-secondary page">수정</a>
                         <button onclick="deleteConfirm();" class="btn btn-danger">삭제</button>
+                      </div>
+                      <div class="card-footer bg-white text-center pt-0 px-lg-2 px-1" th:if="${userName != board.writer}">
+                        <a th:href="@{/board/list} + '?pageNum=__${cri.pageNum}__'" class="btn btn-success page">목록</a>
                       </div>
                       </div>
                     </div>
